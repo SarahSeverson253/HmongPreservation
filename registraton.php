@@ -195,29 +195,14 @@
 	NOTE: This will be changed later with Rhodia's code! I just input dummy HTML here
 	for now in order to keep track of the PHP statements for each field.
 
-    <html lang="en">
-
     <head>
 
-        <meta charset="UTF-8">
-
         <title>Sign Up</title>
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-
-        <style type="text/css">
-
-            body{ font: 14px sans-serif; }
-
-            .wrapper{ width: 350px; padding: 20px; }
-
-        </style>
 
     </head>
 
     <body>
 
-        <div class="wrapper">
 
             <h2>Sign Up</h2>
 

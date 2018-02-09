@@ -12,13 +12,13 @@
 
      
 
-    /* Attempt to connect to MySQL database */
+    /* CONNECT TO SQL DATABASE */
 
     $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
      
 
-    // Check connection
+    // CHECK CONNECT
 
     if($link === false){
 
