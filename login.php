@@ -1,207 +1,42 @@
-
-
+<?php
+session_start();
+$sessData = !empty($_SESSION['sessData'])?$_SESSION['sessData']:'';
+if(!empty($sessData['status']['msg'])){
+    $statusMsg = $sessData['status']['msg'];
+    $statusMsgType = $sessData['status']['type'];
+    unset($_SESSION['sessData']['status']);
+}
+?>
+<div class="container">
     <?php
-
-    // INCLUDE CONFIG
-
-    require_once 'config.php';
-
-     
-
-    // DEFINE VARIABLES AND INITIALIZE WITH EMPTY VALUES
-
-    $username = $password = "";
-
-    $username_err = $password_err = "";
-
-     
-
-    // PROCESS DATA WHEN SUBMITTED
-
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-     
-
-        // CHECK EMPTY USERNAME
-
-        if(empty(trim($_POST["username"]))){
-
-            $username_err = 'Please enter your username.';
-
-        } else{
-
-            $username = trim($_POST["username"]);
-
-        }
-
-        
-
-        // CHECK PASSWORD EMPTY
-
-        if(empty(trim($_POST['password']))){
-
-            $password_err = 'Please enter your password.';
-
-        } else{
-
-            $password = trim($_POST['password']);
-
-        }
-
-        
-
-        // VALIDATE CREDENTIALS
-
-        if(empty($username_err) && empty($password_err)){
-
-            // PREPARE SELECT STATEMENT
-
-            $sql = "SELECT username, password FROM user WHERE username = ?";
-
-            
-
-            if($stmt = mysqli_prepare($link, $sql)){
-
-                // BIND VARIABLES TO PREP STATEMENT AS PARAMETERS
-
-                mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-                
-
-                // SET PARAMETERS
-
-                $param_username = $username;
-
-                
-
-                // EXECUTE PREP STATEMENT
-
-                if(mysqli_stmt_execute($stmt)){
-
-                    // STORE RESULT
-
-                    mysqli_stmt_store_result($stmt);
-
-                    
-
-                    // CHECK USERNAME EXISTS, THEN PASSWORD
-
-                    if(mysqli_stmt_num_rows($stmt) == 1){                    
-
-                        // BIND RESULT VAR
-
-                        mysqli_stmt_bind_result($stmt, $username, $hashed_password);
-
-                        if(mysqli_stmt_fetch($stmt)){
-
-                            if(password_verify($password, $hashed_password)){
-
-                                /* PASSWORD CORRECT, START NEW SESSION */
-
-                                session_start();
-
-                                $_SESSION['username'] = $username;      
-
-                                header("location: welcome.php");
-
-                            } else{
-
-                                // ERROR FOR INVALID PASSWORD
-
-                                $password_err = 'Invalid password.';
-
-                            }
-
-                        }
-
-                    } else{
-
-                        // ERROR IF USERNAME DOESN'T EXIST
-
-                        $username_err = 'No account exists with that username.';
-
-                    }
-
-                } else{
-
-                    echo "Oops! Something went wrong. Please try again later.";
-
-                }
-
-            }
-
-            
-
-            // CLOSE STATEMENT
-
-            mysqli_stmt_close($stmt);
-
-        }
-
-        
-
-        // CLOSE CONNECTION
-
-        mysqli_close($link);
-
-    }
-
+        if(!empty($sessData['userLoggedIn']) && !empty($sessData['userID'])){
+            include 'user.php';
+            $user = new User();
+            $conditions['where'] = array(
+                'id' => $sessData['userID'],
+            );
+            $conditions['return_type'] = 'single';
+            $userData = $user->getRows($conditions);
     ?>
-
-     <!-- DUMMY HTML 
-	 
-	 (to be changed to Rhodia's HTML/CSS later)
-
-    <!DOCTYPE html>
-
-    <head>
-
-    </head>
-
-    <body>
-
-        <div class="wrapper">
-
-            <h2>Login</h2>
-
-            <p>Please fill in your credentials to login.</p>
-
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-
-                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-
-                    <label>Username</label>
-
-                    <input type="text" name="username"class="form-control" value="<?php echo $username; ?>">
-
-                    <span class="help-block"><?php echo $username_err; ?></span>
-
-                </div>    
-
-                <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-
-                    <label>Password</label>
-
-                    <input type="password" name="password" class="form-control">
-
-                    <span class="help-block"><?php echo $password_err; ?></span>
-
-                </div>
-
-                <div class="form-group">
-
-                    <input type="submit" class="btn btn-primary" value="Login">
-
-                </div>
-
-                <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
-
-            </form>
-
-        </div>    
-
-    </body>
-
-    </html>
--->
-
+    <h2>Welcome <?php echo $userData['first_name']; ?>!</h2>
+    <a href="userAccount.php?logoutSubmit=1" class="logout">Logout</a>
+    <div class="regisFrm">
+        <p><b>Name: </b><?php echo $userData['first_name'].' '.$userData['last_name']; ?></p>
+        <p><b>Email: </b><?php echo $userData['email']; ?></p>
+        <p><b>Phone: </b><?php echo $userData['phone']; ?></p>
+    </div>
+    <?php }else{ ?>
+    <h2>Login to Your Account</h2>
+    <?php echo !empty($statusMsg)?'<p class="'.$statusMsgType.'">'.$statusMsg.'</p>':''; ?>
+    <div class="regisFrm">
+        <form action="userAccount.php" method="post">
+            <input type="email" name="email" placeholder="EMAIL" required="">
+            <input type="password" name="password" placeholder="PASSWORD" required="">
+            <div class="send-button">
+                <input type="submit" name="loginSubmit" value="LOGIN">
+            </div>
+        </form>
+        <p>Don't have an account? <a href="registration.php">Register here.</a></p>
+    </div>
+    <?php } ?>
+</div>
