@@ -90,6 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             </label>
             <input type="email"required autocomplete="off" name='email' />
           </div>
+		  
+		  <div class="field-wrap">
+            <label>
+              About Me (Keep to 200 characters or less!)<span class="req">*</span>
+            </label>
+			<br />
+            <textarea name="about">Enter text here...</textarea>
+          </div>
           
           <div class="field-wrap">
             <label>
