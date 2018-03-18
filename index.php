@@ -105,6 +105,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             </label>
             <input type="password"required autocomplete="off" name='password'/>
           </div>
+		  
+		  <div class="field-wrap">
+            <label>
+              Confirm Password<span class="req">*</span>
+            </label>
+            <input type="password"required autocomplete="off" name='confirm'/>
+          </div>
           
           <button type="submit" class="button button-block" name="register" />Register</button>
           
