@@ -7,14 +7,13 @@ session_start();
 <html>
 <head>
   <title>Welcome!</title>
-  <?php include 'css/css.html'; ?>
+
 </head>
 
 <?php 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
 {
     if (isset($_POST['login'])) { //user logging in
-
         require 'login.php';
         
     }
@@ -27,11 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 }
 ?>
 <body>
+
+<h1>The Hmong Preservation Project</h1>
   <div class="form">
       
       <ul class="tab-group">
         <li class="tab"><a href="register.php">Sign Up</a></li>
         <li class="tab active"><a href="login.php">Log In</a></li>
+		<li class="tab active"><a href="gallery.php">Gallery</a></li>
+		<li class="tab active"><a href="about.php">About</a></li>
       </ul>
       
       <div class="tab-content">
@@ -92,11 +95,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           </div>
 		  
 		  <div class="field-wrap">
+              <label>
+                Location<span class="req">*</span>
+              </label>
+              <input type="text"required autocomplete="off" name='location' />
+            </div>
+          </div>
+		  
+		  <div class="field-wrap">
+              <label>
+                Profession<span class="req">*</span>
+              </label>
+              <input type="text"required autocomplete="off" name='profession' />
+            </div>
+          </div>
+		  
+		  <div class="field-wrap">
             <label>
-              About Me (Keep to 200 characters or less!)<span class="req">*</span>
+              Goals with this site:<span class="req">*</span>
             </label>
 			<br />
-            <textarea name="about">Enter text here...</textarea>
+            <textarea name="goal">Enter text here...</textarea>
           </div>
           
           <div class="field-wrap">

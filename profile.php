@@ -1,7 +1,6 @@
 <?php
 /* Displays user information and some useful messages */
 session_start();
-
 // Check if user is logged in using the session variable
 if ( $_SESSION['logged_in'] != 1 ) {
   $_SESSION['message'] = "You must log in before viewing your profile page!";
@@ -12,6 +11,10 @@ else {
     $first_name = $_SESSION['first_name'];
     $last_name = $_SESSION['last_name'];
     $email = $_SESSION['email'];
+	$location = $_SESSION['location'];
+	$profession = $_SESSION['profession'];
+	$goal = $_SESSION['goal'];
+	$profileImageLocation = $_SESSION['profileImageLocation'];
     $active = $_SESSION['active'];
 }
 ?>
@@ -28,7 +31,7 @@ else {
 
           <h1>Welcome</h1>
 		  
-		  <p>Click here to submit an image to the project.<p>
+		  <li class="tab active"><a href="submitImage.php">Click here to submit an image to the project.</a></li>
           
           <p>
           <?php 
@@ -59,7 +62,20 @@ else {
           ?>
           
           <h2><?php echo $first_name.' '.$last_name; ?></h2>
-          <p><?= $email ?></p>
+		  <p>Profile Image: <?= $profileImageLocation ?></p>
+          <p>Email Address: <?= $email ?></p>
+		  <p>Location: <?= $location ?></p>
+		  <p>Profession: <?= $profession ?></p>
+		  <p>Goal: <?= $goal ?></p>
+
+		  
+		  <form action="uploadProfile.php" method="post" enctype="multipart/form-data" name="addroom">
+		  Submit a profile image: <br />
+		  <input type="file" name="image" class="ed"><br />
+		   <input type="submit" name="Submit" value="Upload" id="button1" />
+		  </form> 
+		  <br /><br />
+		  
           
           <a href="logout.php"><button class="button button-block" name="logout"/>Log Out</button></a>
 

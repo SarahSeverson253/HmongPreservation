@@ -39,7 +39,7 @@ $('#previewimg' + abc).attr('src', e.target.result);
 $('#upload').click(function(e) {
 var name = $(":file").val();
 if (!name) {
-alert("You must upload at least one image.");
+alert("You must upload an image.");
 e.preventDefault();
 }
 });
